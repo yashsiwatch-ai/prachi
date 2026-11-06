@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEXUS — Tactical Cloud Edge & Telemetry Console</title>
+  <meta name="description" content="Next-generation tactical cloud console and developer telemetry engine designed with Linear and Vercel precision engineering.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="nexus-theme">
+  <!-- Scanline / Background Grid Overlay -->
+  <div class="hud-grid-background" aria-hidden="true"></div>
+
+  <!-- Application Shell -->
+  <div class="console-shell">
+    <!-- Top Command Navigation -->
+    <header class="console-header">
+      <div class="header-left">
+        <div class="nexus-logo">
+          <span class="nexus-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+              <polyline points="2 17 12 22 22 17"/>
+              <polyline points="2 12 12 17 22 12"/>
+            </svg>
+          </span>
+          <span class="logo-text">NEXUS<span class="logo-accent">.OS</span></span>
+        </div>
+
+        <div class="cluster-badge">
+          <span class="pulse-indicator"></span>
+          <span class="cluster-name">EDGE-GLOBAL // PRODUCTION</span>
+        </div>
+      </div>
+
+      <!-- Edge Region Selector -->
+      <div class="header-center">
+        <div class="region-selector" role="group" aria-label="Select Edge Node">
+          <button class="region-btn active" data-region="sfo-1" data-latency="18">SFO-1 <span class="ms-tag">18ms</span></button>
+          <button class="region-btn" data-region="fra-1" data-latency="26">FRA-1 <span class="ms-tag">26ms</span></button>
+          <button class="region-btn" data-region="hnd-1" data-latency="34">HND-1 <span class="ms-tag">34ms</span></button>
+          <button class="region-btn" data-region="lhr-1" data-latency="22">LHR-1 <span class="ms-tag">22ms</span></button>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <!-- Quick Command Trigger -->
+        <button class="cmd-trigger-btn" id="btnOpenPalette" title="Open Command Palette (⌘K)">
+          <span class="cmd-icon">⌘</span>
+          <span class="cmd-key">K</span>
+          <span class="cmd-label">Commands</span>
+        </button>
+        <div class="operator-tag">
+          <span class="operator-avatar">SYS</span>
+          <span class="operator-id">admin@nexus.io</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="console-main">
+      <!-- Section 1: Real-time Telemetry & Edge Pulse Strip -->
+      <section class="telemetry-strip" aria-labelledby="telemetry-title">
+        <div class="telemetry-item">
+          <div class="t-label-wrap">
+            <span class="t-dot dot-green"></span>
+            <span class="t-label">GLOBAL EDGE STATUS</span>
+          </div>
+          <div class="t-value-row">
+            <span class="t-val">99.998%</span>
+            <span class="t-trend positive">&uarr; Nominal</span>
+          </div>
+          <span class="t-sub">Zero degraded zones detected</span>
+        </div>
+
+        <div class="telemetry-item">
+          <div class="t-label-wrap">
+            <span class="t-dot dot-cyan"></span>
+            <span class="t-label">CURRENT P99 LATENCY</span>
+          </div>
+          <div class="t-value-row">
+            <span class="t-val" id="activeLatencyVal">18.4</span>
+            <span class="t-unit">ms</span>
+            <span class="t-trend neutral">&plusmn; 0.2ms</span>
+          </div>
+          <span class="t-sub" id="activeRegionLabel">Routing through San Francisco (SFO-1)</span>
+        </div>
+
+        <div class="telemetry-item">
+          <div class="t-label-wrap">
+            <span class="t-dot dot-purple"></span>
+            <span class="t-label">THROUGHPUT VOLUME</span>
+          </div>
+          <div class="t-value-row">
+            <span class="t-val" id="activeThroughputVal">148,290</span>
+            <span class="t-unit">req/s</span>
+          </div>
+          <span class="t-sub">Peak ingress capacity 1.2M req/s</span>
+        </div>
+
+        <div class="telemetry-item">
+          <div class="t-label-wrap">
+            <span class="t-dot dot-amber"></span>
+            <span class="t-label">CACHE HIT RATIO</span>
+          </div>
+          <div class="t-value-row">
+            <span class="t-val">96.8%</span>
+            <span class="t-trend positive">Tier-1 SSD Edge</span>
+          </div>
+          <span class="t-sub">12.4 GB cold disk read</span>
+        </div>
+      </section>
+
+      <!-- Section 2: Two-Column Primary Workspace -->
+      <div class="console-grid">
+        <!-- Left Column: Interactive API Sandbox & Request Tester -->
+        <div class="grid-col-left">
+          <div class="panel-box api-runner-panel">
+            <div class="panel-header">
+              <div class="panel-title-wrap">
+                <span class="terminal-symbol">&gt;_</span>
+                <h2 class="panel-title">Interactive Edge Sandbox</h2>
+              </div>
+              <span class="panel-badge">HTTP/3 QUIC</span>
+            </div>
+
+            <!-- Route Selector -->
+            <div class="sandbox-toolbar">
+              <div class="method-selector">
+                <button class="method-tab active" data-method="GET" data-endpoint="/v1/telemetry/nodes">GET</button>
+                <button class="method-tab" data-method="POST" data-endpoint="/v1/edge/purge-cache">POST</button>
+                <button class="method-tab" data-method="GET" data-endpoint="/v1/deployments/active">GET</button>
+              </div>
+              <div class="endpoint-input-wrap">
+                <span class="endpoint-host">api.nexus.io</span>
+                <input type="text" id="endpointField" class="endpoint-input" value="/v1/telemetry/nodes" readonly>
+              </div>
+              <button class="btn-execute" id="btnExecuteRequest">
+                <span class="btn-spinner" id="btnSpinner" aria-hidden="true"></span>
+                <span id="btnExecuteText">Execute &rarr;</span>
+              </button>
+            </div>
+
+            <!-- Response Terminal / Inspector -->
+            <div class="terminal-window">
+              <div class="terminal-bar">
+                <div class="terminal-dots">
+                  <span class="tdot"></span>
+                  <span class="tdot"></span>
+                  <span class="tdot"></span>
+                </div>
+                <div class="terminal-status" id="terminalStatus">
+                  <span class="status-chip chip-200">200 OK</span>
+                  <span class="status-meta" id="terminalTime">41 ms • 824 bytes</span>
+                </div>
+                <button class="terminal-copy-btn" id="btnCopyJson" title="Copy JSON Response">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                  <span>Copy</span>
+                </button>
+              </div>
+
+              <!-- Formatted JSON Viewer -->
+              <pre class="terminal-code" id="terminalOutput"><code>{
+  "status": "success",
+  "cluster": "nexus-edge-global",
+  "active_region": "sfo-1",
+  "edge_latency_ms": 18.4,
+  "nodes_online": 32,
+  "routing_protocol": "HTTP/3 BGP Anycast",
+  "security_shield": "AES-256-GCM nominal",
+  "timestamp": "2026-11-04T17:42:19.821Z"
+}</code></pre>
+            </div>
+          </div>
+
+          <!-- Deployment Pipeline Monitor -->
+          <div class="panel-box deployments-panel">
+            <div class="panel-header">
+              <div class="panel-title-wrap">
+                <span class="terminal-symbol">⚡</span>
+                <h3 class="panel-title">Production Deployments & Rollbacks</h3>
+              </div>
+              <span class="commit-head">HEAD: <code>3f9a12c</code></span>
+            </div>
+
+            <div class="deployments-table-wrap">
+              <table class="deployments-table">
+                <thead>
+                  <tr>
+                    <th>DEPLOYMENT ID</th>
+                    <th>BRANCH / COMMIT</th>
+                    <th>STATUS</th>
+                    <th>TRIGGERED</th>
+                    <th>ACTION</th>
+                  </tr>
+                </thead>
+                <tbody id="deploymentsTableBody">
+                  <tr>
+                    <td><code>dpl_98a72b</code></td>
+                    <td><span class="branch-pill">main</span> <code>fix(edge): anycast route</code></td>
+                    <td><span class="tag-live"><span class="dot-live"></span> ACTIVE</span></td>
+                    <td>2m ago</td>
+                    <td><button class="btn-table-action" disabled>Current Live</button></td>
+                  </tr>
+                  <tr>
+                    <td><code>dpl_82f14c</code></td>
+                    <td><span class="branch-pill">main</span> <code>feat(auth): token revocation</code></td>
+                    <td><span class="tag-superseded">SUPERSEDED</span></td>
+                    <td>3h ago</td>
+                    <td><button class="btn-table-action btn-rollback" data-dpl="dpl_82f14c">Rollback &rarr;</button></td>
+                  </tr>
+                  <tr>
+                    <td><code>dpl_61e90d</code></td>
+                    <td><span class="branch-pill">staging</span> <code>perf(db): shard partition</code></td>
+                    <td><span class="tag-superseded">SUPERSEDED</span></td>
+                    <td>1d ago</td>
+                    <td><button class="btn-table-action btn-rollback" data-dpl="dpl_61e90d">Rollback &rarr;</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: API Token Studio & Secrets Manager -->
+        <div class="grid-col-right">
+          <!-- Token Minting Tool -->
+          <div class="panel-box token-panel">
+            <div class="panel-header">
+              <div class="panel-title-wrap">
+                <span class="terminal-symbol">🔑</span>
+                <h3 class="panel-title">Edge Secret & Token Generator</h3>
+              </div>
+              <span class="scope-tag">ECC secp256k1</span>
+            </div>
+
+            <div class="token-generator-form">
+              <div class="form-field">
+                <label for="tokenNameInput" class="field-label">TOKEN IDENTIFIER</label>
+                <input type="text" id="tokenNameInput" class="nexus-input" value="ci-cd-edge-pipeline" placeholder="e.g. staging-ingest-worker">
+              </div>
+
+              <!-- Permission Scopes Checkboxes -->
+              <div class="form-field">
+                <span class="field-label">PERMISSION SCOPES</span>
+                <div class="scopes-grid">
+                  <label class="scope-chip active">
+                    <input type="checkbox" checked value="telemetry:read" class="sr-only scope-cb">
+                    <span class="cb-custom"></span>
+                    <span>telemetry:read</span>
+                  </label>
+                  <label class="scope-chip active">
+                    <input type="checkbox" checked value="edge:deploy" class="sr-only scope-cb">
+                    <span class="cb-custom"></span>
+                    <span>edge:deploy</span>
+                  </label>
+                  <label class="scope-chip">
+                    <input type="checkbox" value="tokens:admin" class="sr-only scope-cb">
+                    <span class="cb-custom"></span>
+                    <span>tokens:admin</span>
+                  </label>
+                  <label class="scope-chip">
+                    <input type="checkbox" value="billing:write" class="sr-only scope-cb">
+                    <span class="cb-custom"></span>
+                    <span>billing:write</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Mint Button -->
+              <button class="btn-nexus-primary" id="btnMintToken">Generate Tactical API Key</button>
+
+              <!-- Display Minted Token -->
+              <div class="minted-token-box" id="mintedTokenBox">
+                <div class="token-top-row">
+                  <span class="token-security-badge">RAW TOKEN (SHOWN ONCE)</span>
+                  <span class="token-expiry">Never expires</span>
+                </div>
+                <div class="token-string-row">
+                  <code id="tokenString" class="token-text">nxs_live_9f82d1c6a0b4e39281745e</code>
+                  <button class="btn-copy-token" id="btnCopyToken" title="Copy to Clipboard">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                    <span id="copyTokenLabel">Copy</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Real-time Cluster Activity Stream -->
+          <div class="panel-box activity-panel">
+            <div class="panel-header">
+              <div class="panel-title-wrap">
+                <span class="terminal-symbol">⟲</span>
+                <h3 class="panel-title">Audit Stream</h3>
+              </div>
+              <span class="live-dot-pulse">LIVE</span>
+            </div>
+
+            <div class="activity-feed" id="activityFeed">
+              <div class="feed-entry">
+                <span class="feed-time">14:41:02</span>
+                <span class="feed-badge badge-green">TLS</span>
+                <span class="feed-desc">Auto-renewed cert for <code>*.nexus.io</code></span>
+              </div>
+              <div class="feed-entry">
+                <span class="feed-time">14:38:19</span>
+                <span class="feed-badge badge-cyan">SCALE</span>
+                <span class="feed-desc">Spun 4 additional workers in <code>hnd-1</code></span>
+              </div>
+              <div class="feed-entry">
+                <span class="feed-time">14:30:45</span>
+                <span class="feed-badge badge-purple">DEPLOY</span>
+                <span class="feed-desc">Deployment <code>dpl_98a72b</code> promoted to 100% traffic</span>
+              </div>
+              <div class="feed-entry">
+                <span class="feed-time">14:12:00</span>
+                <span class="feed-badge badge-green">HEALTH</span>
+                <span class="feed-desc">Global BGP route propagation verified</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Bottom Command HUD Bar -->
+    <footer class="console-footer">
+      <div class="footer-left">
+        <span class="footer-status-pill"><span class="f-dot"></span> All 32 Regions Operational</span>
+        <span class="sep-bar">/</span>
+        <span class="footer-mono">HTTP/3 BGP 124.8.0.1</span>
+      </div>
+
+      <div class="footer-shortcuts">
+        <span class="sc-item"><kbd>⌘</kbd> + <kbd>K</kbd> Command Palette</span>
+        <span class="sc-item"><kbd>E</kbd> Run Endpoint</span>
+        <span class="sc-item"><kbd>T</kbd> Mint Token</span>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Command Palette Modal (Linear Style) -->
+  <div class="palette-backdrop" id="paletteBackdrop" aria-hidden="true">
+    <div class="palette-modal" role="dialog" aria-modal="true" aria-labelledby="paletteSearchInput">
+      <div class="palette-input-wrap">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="palette-search-icon"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="paletteSearchInput" class="palette-input" placeholder="Type a command or search telemetry..." autocomplete="off">
+        <kbd class="palette-esc-badge">ESC</kbd>
+      </div>
+
+      <div class="palette-results" id="paletteResults">
+        <div class="palette-group-title">QUICK ACTIONS</div>
+        <div class="palette-item" data-action="run-endpoint">
+          <span class="p-item-icon">⚡</span>
+          <span class="p-item-title">Execute Active Endpoint Request</span>
+          <kbd class="p-item-shortcut">Enter</kbd>
+        </div>
+        <div class="palette-item" data-action="mint-token">
+          <span class="p-item-icon">🔑</span>
+          <span class="p-item-title">Mint New API Key</span>
+          <kbd class="p-item-shortcut">T</kbd>
+        </div>
+        <div class="palette-item" data-action="switch-fra">
+          <span class="p-item-icon">🌐</span>
+          <span class="p-item-title">Route to Europe (Frankfurt FRA-1)</span>
+        </div>
+        <div class="palette-item" data-action="switch-sfo">
+          <span class="p-item-icon">🌐</span>
+          <span class="p-item-title">Route to US West (San Francisco SFO-1)</span>
+        </div>
+        <div class="palette-item" data-action="purge-cache">
+          <span class="p-item-icon">🧹</span>
+          <span class="p-item-title">Purge Edge Cache Layer</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tactical Toast Feedback -->
+  <div class="nexus-toast" id="nexusToast" role="alert">Copied to clipboard</div>
+
+  <script src="app.js"></script>
+</body>
+</html>
+
